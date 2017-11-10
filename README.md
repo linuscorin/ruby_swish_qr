@@ -13,7 +13,8 @@ https://developer.getswish.se/qr-api-manual/4-create-qr-codes-using-swish-qr-cod
 
 
 # Example usage
-Controller:
+## Controller:
+```ruby
 @image = SwishQr.new(
   editable: [ :message, :amount],
   format: "svg",
@@ -21,7 +22,10 @@ Controller:
   amount: 6789,
   message: "Invoice X from Company Y",
 ).image
+```
 
 
-View:
+## View:
+```ruby
 =raw @image
+```
