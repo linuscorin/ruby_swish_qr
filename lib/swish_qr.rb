@@ -4,7 +4,6 @@
 
 class SwishQr
   require 'httparty'
-  RELEASE_DATE="2017-11-09"
 
   SWISH_QR_API_ENDPOINT="https://www.swish.bankgirot.se/qrg-swish/api/v1/prefilled"
   @result = {}
