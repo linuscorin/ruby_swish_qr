@@ -16,18 +16,13 @@ class SwishQr
   VALID_FORMATS = [ 'svg', 'png', 'jpg' ]
 
   def initialize(args)
-    raise ArgumentError, "Invalid format: '#{args[:format]}', must specify one of: #{VALID_FORMATS}" unless VALID_FORMATS.include?(args[:format])
-    raise ArgumentError, "Size (minimum 300) must be specified for #{args[:format]}" unless (args[:format] == 'svg' || args[:size].to_i >= 300)
-    raise ArgumentError, "JPEG can't be transparent" if (args[:format] == 'jpg' && args[:transparent])
-    raise ArgumentError, "Max border is 4" if (args[:border].to_i > 4)
+    check_args(args)
     @result = HTTParty.post(SWISH_QR_API_ENDPOINT,
       :body => build_request_body(args),
       :headers => { 'Content-Type' => 'application/json' } )
   end
 
   def image
-    # To make it handle different formats in different ways, maybe have a method for each one, which returns something sensible
-    # self.send(@image_format)
     @result.body
   end
 
@@ -43,11 +38,12 @@ class SwishQr
     @result.parsed_response['error']
   end
 
-  private
-
-  #def svg
-  #  @result.body
-  #end
+  def check_args(args)
+    raise ArgumentError, "Invalid format: '#{args[:format]}', must specify one of: #{VALID_FORMATS}" unless VALID_FORMATS.include?(args[:format])
+    raise ArgumentError, "Size (minimum 300) must be specified for #{args[:format]}" unless (args[:format] == 'svg' || args[:size].to_i >= 300)
+    raise ArgumentError, "JPEG can't be transparent" if (args[:format] == 'jpg' && args[:transparent])
+    raise ArgumentError, "Max border is 4" if (args[:border].to_i > 4)
+  end
 
   def build_request_body(args)
     @image_format = args[:format]
