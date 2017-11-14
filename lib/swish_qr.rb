@@ -2,23 +2,25 @@
 # https://developer.getswish.se/qr-api-manual/4-create-qr-codes-using-swish-qr-code-generator-apis/#4-1-1-prefilled
 # https://developer.getswish.se/content/uploads/2017/04/Guide-Swish-QR-code-design-specification_v1.5.pdf
 
-# TODO: Throw exceptions for invalid input: Border > 4, , Size < 300, missing size for formats other than SVG, missing format
-
 class SwishQr
   require 'httparty'
-  VERSION="0.0.0"
   RELEASE_DATE="2017-11-09"
 
   SWISH_QR_API_ENDPOINT="https://www.swish.bankgirot.se/qrg-swish/api/v1/prefilled"
   @result = {}
   @request_hash = {}
   @image_format
-  attr_accessor :result, :request_hash
+  attr_accessor :request_hash
 
   SIMPLE_VALUES = [ :format, :size, :border, :transparent ]
   COMPLEX_VALUES = [ :payee, :amount, :message ]
+  VALID_FORMATS = [ 'svg', 'png', 'jpg' ]
 
   def initialize(args)
+    raise ArgumentError, "Invalid format: '#{args[:format]}', must specify one of: #{VALID_FORMATS}" unless VALID_FORMATS.include?(args[:format])
+    raise ArgumentError, "Size (minimum 300) must be specified for #{args[:format]}" unless (args[:format] == 'svg' || args[:size].to_i >= 300)
+    raise ArgumentError, "JPEG can't be transparent" if (args[:format] == 'jpg' && args[:transparent])
+    raise ArgumentError, "Max border is 4" if (args[:border].to_i > 4)
     @result = HTTParty.post(SWISH_QR_API_ENDPOINT,
       :body => build_request_body(args),
       :headers => { 'Content-Type' => 'application/json' } )
@@ -28,6 +30,18 @@ class SwishQr
     # To make it handle different formats in different ways, maybe have a method for each one, which returns something sensible
     # self.send(@image_format)
     @result.body
+  end
+
+  def success?
+    @result.code == 200
+  end
+
+  def http_response_code
+    @result.code
+  end
+
+  def error
+    @result.parsed_response['error']
   end
 
   private
