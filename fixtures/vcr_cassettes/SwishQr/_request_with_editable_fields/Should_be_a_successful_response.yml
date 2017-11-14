@@ -22,7 +22,7 @@ http_interactions:
       Content-Length:
       - '175917'
       Date:
-      - Tue, 14 Nov 2017 08:25:03 GMT
+      - Tue, 14 Nov 2017 08:25:01 GMT
     body:
       encoding: UTF-8
       string: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE svg PUBLIC \"-//W3C//DTD
@@ -451,5 +451,5 @@ http_interactions:
         38 8.125 a 3 3 0 0 0 -3 -3 v 3 Z\"/><use x=\"490.1777777777778\" y=\"490.1777777777778\"
         transform=\"scale(0.035966542750929364)\" xlink:href=\"#swishlogo\"/>\n</svg>"
     http_version: 
-  recorded_at: Tue, 14 Nov 2017 08:25:05 GMT
+  recorded_at: Tue, 14 Nov 2017 08:25:03 GMT
 recorded_with: VCR 3.0.3
