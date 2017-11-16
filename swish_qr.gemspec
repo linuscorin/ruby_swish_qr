@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'swish_qr'
-  s.version     = '0.0.2'
+  s.version     = '0.0.3'
   s.date        = '2017-11-16'
   s.summary     = 'QR code generator for Swish'
   s.description = 'An interface for the public Swish QR API'

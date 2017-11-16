@@ -104,3 +104,12 @@ describe SwishQr do
     end
   end
 end
+
+describe SwishUri do
+  describe '#request with editable fields' do
+    subject { SwishUri.new(format: 'svg', size: 300, border: 3, transparent: true, amount: 6789, payee: 1234567890, message: "A test QR code for Swish", editable: [ :message, :payee ] ) }
+    it 'URI should be built correctly' do
+      expect(subject.uri).to eq ('swish://payment?data={"version":1,"format":"svg","size":300,"border":3,"transparent":true,"payee":{"value":1234567890,"editable":true},"amount":{"value":6789,"editable":false},"message":{"value":"A test QR code for Swish","editable":true}}')
+    end
+  end
+end

@@ -49,9 +49,19 @@ class SwishQr
     @image_format = args[:format]
     @request_hash = get_simple_values_from_args(args)
     @request_hash.merge!(get_complex_values_from_args(args))
-    @request_hash.delete(:amount) if @request_hash[:amount] && @request_hash[:amount][:value].to_i == 0
-    #puts @request_hash
+    sanitise_amount
     @request_hash.to_json
+  end
+
+  def sanitise_amount
+    return unless @request_hash[:amount]
+    # Delete amount if it's blank / 0, to ensure that the request is valid
+    if @request_hash[:amount][:value].to_i == 0
+      @request_hash.delete(:amount)
+      return
+    end
+    # This is to support BigDecimal, which would otherwise get misrepresented as a string in the JSON
+    @request_hash[:amount][:value] = @request_hash[:amount][:value].to_f unless @request_hash[:amount][:value].is_a?(Integer)
   end
 
   def get_simple_values_from_args(args)
@@ -65,5 +75,15 @@ class SwishQr
     end
     ret
   end
-
 end
+
+class SwishUri < SwishQr
+  def initialize(args)
+    build_request_body(args)
+  end
+
+  def uri
+    "swish://payment?data=#{{version: 1}.merge(@request_hash).to_json}"
+  end
+end
+
