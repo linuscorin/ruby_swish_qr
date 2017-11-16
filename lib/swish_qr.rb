@@ -49,6 +49,7 @@ class SwishQr
     @image_format = args[:format]
     @request_hash = get_simple_values_from_args(args)
     @request_hash.merge!(get_complex_values_from_args(args))
+    @request_hash.delete(:amount) if @request_hash[:amount] && @request_hash[:amount][:value].to_i == 0
     #puts @request_hash
     @request_hash.to_json
   end
@@ -60,7 +61,7 @@ class SwishQr
   def get_complex_values_from_args(args)
     ret = {}
     COMPLEX_VALUES.each do |k|
-      ret[k] = { value: args[k], editable: (args[:editable].include?(k)) } if args[k]
+      ret[k] = { value: args[k], editable: ((args[:editable]||[]).include?(k)) } if args[k]
     end
     ret
   end

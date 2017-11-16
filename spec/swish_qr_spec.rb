@@ -73,4 +73,34 @@ describe SwishQr do
       expect(subject.request_hash).to eq ({format: 'svg', size: 300, border: 3, transparent: true, amount: { value: 6789, editable: false }, payee: { value: 1234567890, editable: true }, message: {value: "A test QR code for Swish", editable: true }})
     end
   end
+
+  describe '#request with blank amount', :vcr do
+    subject { SwishQr.new(format: 'svg', amount: 0, payee: 1234567890 ) }
+    it 'Should be a successful response' do
+      expect(subject.success?).to eq true
+    end
+
+    it 'Error should be empty' do
+      expect(subject.error).to be_nil
+    end
+
+    it 'Request hash should not contain amount' do
+      expect(subject.request_hash).to eq ({format: 'svg', payee: { value: 1234567890, editable: false }})
+    end
+  end
+
+  describe '#request with 0 amount', :vcr do
+    subject { SwishQr.new(format: 'svg', amount: 0, payee: 1234567890 ) }
+    it 'Should be a successful response' do
+      expect(subject.success?).to eq true
+    end
+
+    it 'Error should be empty' do
+      expect(subject.error).to be_nil
+    end
+
+    it 'Request hash should not contain amount' do
+      expect(subject.request_hash).to eq ({format: 'svg', payee: { value: 1234567890, editable: false }})
+    end
+  end
 end
