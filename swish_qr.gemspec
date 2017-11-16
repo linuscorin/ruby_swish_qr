@@ -2,8 +2,8 @@ Gem::Specification.new do |s|
   s.name        = 'swish_qr'
   s.version     = '0.0.3'
   s.date        = '2017-11-16'
-  s.summary     = 'QR code generator for Swish'
-  s.description = 'An interface for the public Swish QR API'
+  s.summary     = 'QR code and URI generator for Swish'
+  s.description = 'An interface for the public Swish QR API, and generator of Swish payment URIs'
   s.authors     = ['Linus Corin']
   s.email       = ['noreply+see_website_for_email@corin.net']
   s.files       = ['lib/swish_qr.rb']
