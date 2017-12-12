@@ -47,7 +47,7 @@ describe SwishQr do
     end
 
     it 'Request hash should be built correctly' do
-      expect(subject.request_hash).to eq ({format: 'svg'})
+      expect(subject.data_hash).to eq ({format: 'svg'})
     end
   end
 
@@ -66,11 +66,11 @@ describe SwishQr do
     end
 
     it 'Message should be as set by caller, and editable' do
-      expect(subject.request_hash[:message]).to eq ({ value: "A test QR code for Swish", editable: true })
+      expect(subject.data_hash[:message]).to eq ({ value: "A test QR code for Swish", editable: true })
     end
 
     it 'Request hash should be built correctly' do
-      expect(subject.request_hash).to eq ({format: 'svg', size: 300, border: 3, transparent: true, amount: { value: 6789, editable: false }, payee: { value: 1234567890, editable: true }, message: {value: "A test QR code for Swish", editable: true }})
+      expect(subject.data_hash).to eq ({format: 'svg', size: 300, border: 3, transparent: true, amount: { value: 6789, editable: false }, payee: { value: 1234567890, editable: true }, message: {value: "A test QR code for Swish", editable: true }})
     end
   end
 
@@ -85,7 +85,7 @@ describe SwishQr do
     end
 
     it 'Request hash should not contain amount' do
-      expect(subject.request_hash).to eq ({format: 'svg', payee: { value: 1234567890, editable: false }})
+      expect(subject.data_hash).to eq ({format: 'svg', payee: { value: 1234567890, editable: false }})
     end
   end
 
@@ -100,7 +100,7 @@ describe SwishQr do
     end
 
     it 'Request hash should not contain amount' do
-      expect(subject.request_hash).to eq ({format: 'svg', payee: { value: 1234567890, editable: false }})
+      expect(subject.data_hash).to eq ({format: 'svg', payee: { value: 1234567890, editable: false }})
     end
   end
 end

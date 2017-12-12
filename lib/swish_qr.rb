@@ -7,9 +7,9 @@ class SwishQr
 
   SWISH_QR_API_ENDPOINT="https://www.swish.bankgirot.se/qrg-swish/api/v1/prefilled"
   @result = {}
-  @request_hash = {}
+  @data_hash = {}
   @image_format
-  attr_accessor :request_hash
+  attr_accessor :data_hash
 
   SIMPLE_VALUES = [ :format, :size, :border, :transparent ]
   COMPLEX_VALUES = [ :payee, :amount, :message ]
@@ -18,7 +18,7 @@ class SwishQr
   def initialize(args)
     check_args(args)
     @result = HTTParty.post(SWISH_QR_API_ENDPOINT,
-      :body => build_request_body(args),
+      :body => build_data_hash(args),
       :headers => { 'Content-Type' => 'application/json' } )
   end
 
@@ -38,6 +38,8 @@ class SwishQr
     @result.parsed_response['error']
   end
 
+  private
+
   def check_args(args)
     raise ArgumentError, "Invalid format: '#{args[:format]}', must specify one of: #{VALID_FORMATS}" unless VALID_FORMATS.include?(args[:format])
     raise ArgumentError, "Size (minimum 300) must be specified for #{args[:format]}" unless (args[:format] == 'svg' || args[:size].to_i >= 300)
@@ -45,23 +47,23 @@ class SwishQr
     raise ArgumentError, "Max border is 4" if (args[:border].to_i > 4)
   end
 
-  def build_request_body(args)
+  def build_data_hash(args)
     @image_format = args[:format]
-    @request_hash = get_simple_values_from_args(args)
-    @request_hash.merge!(get_complex_values_from_args(args))
+    @data_hash = get_simple_values_from_args(args)
+    @data_hash.merge!(get_complex_values_from_args(args))
     sanitise_amount
-    @request_hash.to_json
+    @data_hash.to_json
   end
 
   def sanitise_amount
-    return unless @request_hash[:amount]
+    return unless @data_hash[:amount]
     # Delete amount if it's blank / 0, to ensure that the request is valid
-    if @request_hash[:amount][:value].to_i == 0
-      @request_hash.delete(:amount)
+    if @data_hash[:amount][:value].to_i == 0
+      @data_hash.delete(:amount)
       return
     end
     # This is to support BigDecimal, which would otherwise get misrepresented as a string in the JSON
-    @request_hash[:amount][:value] = @request_hash[:amount][:value].to_f unless @request_hash[:amount][:value].is_a?(Integer)
+    @data_hash[:amount][:value] = @data_hash[:amount][:value].to_f unless @data_hash[:amount][:value].is_a?(Integer)
   end
 
   def get_simple_values_from_args(args)
@@ -79,11 +81,11 @@ end
 
 class SwishUri < SwishQr
   def initialize(args)
-    build_request_body(args)
+    build_data_hash(args)
   end
 
   def uri
-    "swish://payment?data=#{{version: 1}.merge(@request_hash).to_json}"
+    "swish://payment?data=#{{version: 1}.merge(@data_hash).to_json}"
   end
 end
 
