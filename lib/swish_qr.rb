@@ -41,10 +41,26 @@ class SwishQr
   private
 
   def check_args(args)
-    raise ArgumentError, "Invalid format: '#{args[:format]}', must specify one of: #{VALID_FORMATS}" unless VALID_FORMATS.include?(args[:format])
-    raise ArgumentError, "Size (minimum 300) must be specified for #{args[:format]}" unless (args[:format] == 'svg' || args[:size].to_i >= 300)
+    check_format(args)
+    check_jpeg_transparency(args)
+    check_border(args)
+    check_size(args)
+  end
+
+  def check_jpeg_transparency(args)
     raise ArgumentError, "JPEG can't be transparent" if (args[:format] == 'jpg' && args[:transparent])
+  end
+
+  def check_border(args)
     raise ArgumentError, "Max border is 4" if (args[:border].to_i > 4)
+  end
+
+  def check_size(args)
+    raise ArgumentError, "Size (minimum 300) must be specified for #{args[:format]}" unless (args[:format] == 'svg' || args[:size].to_i >= 300)
+  end
+
+  def check_format(args)
+    raise ArgumentError, "Invalid format: '#{args[:format]}', must specify one of: #{VALID_FORMATS}" unless VALID_FORMATS.include?(args[:format])
   end
 
   def build_data_hash(args)
