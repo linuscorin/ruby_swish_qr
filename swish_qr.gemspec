@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'swish_qr'
-  s.version     = '0.0.4'
-  s.date        = '2017-12-12'
+  s.version     = '0.0.5'
+  s.date        = '2017-12-14'
   s.summary     = 'QR code and URI generator for Swish'
   s.description = 'An interface for the public Swish QR API, and generator of Swish payment URIs'
   s.authors     = ['Linus Corin']
