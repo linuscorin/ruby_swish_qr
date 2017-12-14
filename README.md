@@ -1,5 +1,6 @@
 # Ruby SwishQr / SwishUri
 A Ruby Gem for generating Swish QR codes and Swish URIs
+[![Gem Version](https://badge.fury.io/rb/swish_qr.svg)](https://badge.fury.io/rb/swish_qr)
 
 # What is it?
 Swish is a Swedish mobile payment system.
