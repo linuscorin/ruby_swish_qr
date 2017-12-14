@@ -9,9 +9,9 @@ Gem::Specification.new do |s|
   s.files       = ['lib/swish_qr.rb']
   s.homepage    = 'https://github.com/linuscorin/ruby_swish_qr'
   s.license     = 'MIT'
-  s.add_runtime_dependency 'httparty', '~> 0'
-  s.add_development_dependency 'httparty', '~> 0'
-  s.add_development_dependency 'rspec', '~> 0'
-  s.add_development_dependency 'rake', '~> 0'
-  s.add_development_dependency 'vcr', '~> 0'
+  s.add_runtime_dependency 'httparty', '~> 0.15'
+  s.add_development_dependency 'httparty', '~> 0.15'
+  s.add_development_dependency 'rspec', '~> 3.0'
+  s.add_development_dependency 'rake', '~> 12.0'
+  s.add_development_dependency 'vcr', '~> 4.0'
 end
