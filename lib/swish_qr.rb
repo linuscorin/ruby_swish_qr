@@ -5,7 +5,7 @@
 class SwishQr
   require 'httparty'
 
-  SWISH_QR_API_ENDPOINT="https://www.swish.bankgirot.se/qrg-swish/api/v1/prefilled"
+  SWISH_QR_API_ENDPOINT="https://mpc.getswish.net/qrg-swish/api/v1/prefilled"
   @result = {}
   @data_hash = {}
   @image_format
